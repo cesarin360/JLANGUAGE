@@ -1,0 +1,53 @@
+package Clases;
+import java_cup.runtime.Symbol;
+
+parser code
+{:
+    private Symbol s;
+    
+    public void syntax_error(Symbol s){
+        this.s = s;
+    }
+
+    public Symbol getS(){
+        return this.s;
+}
+:};
+
+terminal Sustantivos,AdPosesivos,AdDemostrativos,AdCalificativos,AdNumCardinal,AdNumOrdinal,AdIndefinidos,ArtDefinidos,ArtIndefinidos
+            ,PronPerSingulares ,PronPerPlurales,PronPer,PronDemostrativos,PronInterrogativos,VerbAm,VerbWas,VerbWere,VerbIs,VerbAre,VerbBe,VerbBeing
+            ,VerbosRegPresent,VerbosRegIng,VerbRegPast,VerbosIrregPresent,VerbIrregIng,VerbIrregPast,AdvTiempo,AdvLugar,AdvCantidad ,AdvModo ,AdvAfirmacion
+            ,AdvNegacion,AdvDuda,preposiciones,CC_Explicativas,CC_Copulativas,CC_Adversativas,CC_Distributivas,CC_Disyuntivas,CS_Condicionales
+    ,CS_Casuales
+    ,CS_Consecutivas
+    ,CS_Concesivas
+    ,CS_Finales
+    ,CS_Concetivas
+,Cs_Comparativas
+    ,AuxGoing
+    ,AuxWill
+    ,AuxDo
+    ,SigPunt
+    ,ERROR
+    ,PronI;
+
+
+non terminal INICIO, O_DECLARATIVA, O_INTERROGATIVA, O_IMPERATIVA, O_CONDICIONAL, ORACION, Pronombres;
+
+start with INICIO;
+
+INICIO ::= O_DECLARATIVA | O_INTERROGATIVA | O_IMPERATIVA | O_CONDICIONAL | ORACION;
+
+O_DECLARATIVA ::= Sustantivos VerbAre AdvLugar | AdPosesivos Sustantivos VerbIs AdCalificativos;
+
+O_INTERROGATIVA ::= PronInterrogativos VerbIs Sustantivos | PronInterrogativos VerbIs AdPosesivos Sustantivos;
+
+O_IMPERATIVA ::= VerbosIrregPresent AdvLugar | VerbosIrregPresent Pronombres  AdPosesivos Sustantivos;
+
+O_CONDICIONAL ::= CS_Condicionales PronPerSingulares VerbosIrregPresent AdvCantidad ArtDefinidos Sustantivos SigPunt AdvLugar AuxWill VerbBe AdvNegacion Sustantivos;
+
+ORACION ::= ArtDefinidos Sustantivos VerbIs SigPunt | CS_Concesivas PronPerPlurales VerbosIrregPresent Sustantivos SigPunt PronPerPlurales AuxWill VerbosRegPresent PronPerSingulares SigPunt
+               |  AdPosesivos Sustantivos VerbIs AdvCantidad AdvModo CC_Copulativas AdvLugar Sustantivos SigPunt CC_Copulativas AdvLugar SigPunt PronPerSingulares VerbIs AdCalificativos;
+
+
+Pronombres ::= PronPerSingulares | PronPerPlurales | PronPer | PronDemostrativos | PronInterrogativos;
